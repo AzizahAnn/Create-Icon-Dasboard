@@ -155,12 +155,12 @@ table th { color:#38bdf8; }
 
 <div class="topbar">
     <div style="display:flex; align-items:center;">
-        <a href="../admin.php" class="back-link"><i class="fa fa-arrow-left"></i> Kembali</a>
+        <a href="admin.php" class="back-link"><i class="fa fa-arrow-left"></i> Kembali</a>
         <span class="brand"><i class="fa fa-database"></i> ARSIP PRO</span>
     </div>
     <div class="right">
         <span class="user-info"><i class="fa fa-user-circle"></i> <?= htmlspecialchars($username) ?></span>
-        <a href="../logout.php" class="btn-logout"><i class="fa fa-right-from-bracket"></i> Logout</a>
+        <a href="logout.php" class="btn-logout"><i class="fa fa-right-from-bracket"></i> Logout</a>
     </div>
 </div>
 
