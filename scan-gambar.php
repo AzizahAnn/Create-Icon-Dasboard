@@ -1,7 +1,7 @@
 <?php
 $page_title = "Scan Gambar";
 $page_icon = "fa-camera";
-include "includes/header.php";
+include "header.php";
 
 $msg = "";
 if ($_SERVER["REQUEST_METHOD"] === "POST" && isset($_FILES["gambar"])) {
@@ -49,4 +49,4 @@ rsort($files);
     <?php endif; ?>
 </div>
 
-<?php include "includes/footer.php"; ?>
+<?php include "footer.php"; ?>
