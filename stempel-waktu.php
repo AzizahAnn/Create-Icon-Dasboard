@@ -1,7 +1,7 @@
 <?php
 $page_title = "Stempel Waktu";
 $page_icon = "fa-clock";
-include "includes/header.php";
+include "header.php";
 
 $hasil_file = "";
 $error = "";
@@ -68,4 +68,4 @@ if ($_SERVER["REQUEST_METHOD"] === "POST" && isset($_FILES["gambar"])) {
 </div>
 <?php endif; ?>
 
-<?php include "includes/footer.php"; ?>
+<?php include "footer.php"; ?>
