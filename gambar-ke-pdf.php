@@ -1,7 +1,7 @@
 <?php
 $page_title = "Ubah Gambar ke PDF";
 $page_icon = "fa-file-pdf";
-include "includes/header.php";
+include "header.php";
 ?>
 
 <div class="panel">
@@ -64,4 +64,4 @@ function loadImage(src) {
 }
 </script>
 
-<?php include "includes/footer.php"; ?>
+<?php include "footer.php"; ?>
