@@ -132,6 +132,7 @@ body {
     padding:10px 12px;
     font-size:13px;
     color:#94a3b8;
+    direction:ltr;
 }
 
 .submenu a:hover {
