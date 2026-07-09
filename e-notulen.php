@@ -1,7 +1,7 @@
 <?php
 $page_title = "E-Notulen (Voice to Teks)";
 $page_icon = "fa-microphone";
-include "includes/header.php";
+include "header.php";
 ?>
 
 <div class="panel">
@@ -73,4 +73,4 @@ document.getElementById('btnSave').addEventListener('click', () => {
 });
 </script>
 
-<?php include "includes/footer.php"; ?>
+<?php include "footer.php"; ?>

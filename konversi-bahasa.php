@@ -1,7 +1,7 @@
 <?php
 $page_title = "Konversi Bahasa";
 $page_icon = "fa-language";
-include "includes/header.php";
+include "header.php";
 
 $hasil = "";
 $teks = "";
@@ -60,4 +60,4 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
 
 <p class="note" style="margin-top:-10px;">Menggunakan layanan gratis MyMemory Translation API (butuh koneksi internet, ada batas penggunaan harian).</p>
 
-<?php include "includes/footer.php"; ?>
+<?php include "footer.php"; ?>
