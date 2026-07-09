@@ -190,7 +190,7 @@ body {
 }
 .import-dropzone i.upload-icon {
     font-size: 42px;
-    color: #38bdf8;
+    color: #38bdf8:
     margin-bottom: 12px;
     display: block;
 }
