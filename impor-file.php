@@ -42,6 +42,9 @@ if ($_SERVER["REQUEST_METHOD"] === "POST" && isset($_FILES["dokumen"])) {
     } elseif ($file["size"] > $max_size) {
         $msg = "Ukuran file terlalu besar. Maksimal " . ($max_size / 1024 / 1024) . " MB.";
         $msg_type = "error";
+    } elseif (!$kategoriImporFileId) {
+        $msg = "Upload dibatalkan: kategori 'Impor File' belum siap. " . $msg;
+        $msg_type = "error";
     } else {
         $originalName = pathinfo($file["name"], PATHINFO_FILENAME);
         $safeName     = preg_replace('/[^a-zA-Z0-9_-]/', '_', $originalName);
