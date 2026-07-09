@@ -1,6 +1,6 @@
 <?php
 $page_title = "Impor File";
-$page_icon_img = "icon/impor-file.png";
+$page_icon_img = "icon/impor-dokumen.png";
 include "header.php";
 
 $username = $_SESSION["username"] ?? "Admin";

@@ -109,7 +109,23 @@ body {
 }
 
 .submenu.open {
-    max-height:500px;
+    max-height:280px;
+    overflow-y:auto;
+}
+
+.submenu::-webkit-scrollbar {
+    width:5px;
+}
+.submenu::-webkit-scrollbar-track {
+    background:transparent;
+}
+.submenu::-webkit-scrollbar-thumb {
+    background:#334155;
+    border-radius:10px;
+}
+.submenu {
+    scrollbar-width:thin;
+    scrollbar-color:#334155 transparent;
 }
 
 .submenu a {
