@@ -1,7 +1,7 @@
 <?php
 $page_title = "Analisis Data";
 $page_icon = "fa-chart-pie";
-include "includes/header.php";
+include "header.php";
 
 // Data simulasi -- nanti diganti hasil query database
 $per_kategori = ["SK" => 320, "Laporan" => 280, "Surat" => 410, "Notulen" => 150, "Kontrak" => 120];
@@ -56,4 +56,4 @@ new Chart(document.getElementById('chartBulan'), {
 });
 </script>
 
-<?php include "includes/footer.php"; ?>
+<?php include "footer.php"; ?>

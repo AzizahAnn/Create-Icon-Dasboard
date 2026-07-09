@@ -1,7 +1,7 @@
 <?php
 $page_title = "Lihat Data";
 $page_icon = "fa-table";
-include "includes/header.php";
+include "header.php";
 
 // Data simulasi -- nanti ganti dengan query ke database
 $data_arsip = [
@@ -33,4 +33,4 @@ $data_arsip = [
     <p class="note">Data ini masih simulasi. Nanti kalau database sudah dibuat, tabel ini akan menampilkan data arsip yang sebenarnya.</p>
 </div>
 
-<?php include "includes/footer.php"; ?>
+<?php include "footer.php"; ?>
