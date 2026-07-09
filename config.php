@@ -3,7 +3,7 @@
 // KONEKSI DATABASE
 // ==========================================
 $host = "localhost";
-$dbname = "arsip_db";
+$dbname = "dokpin_db";
 $db_user = "root";
 $db_pass = ""; // default XAMPP kosong
 

@@ -1,6 +1,6 @@
 <?php
 $page_title = "Stempel Waktu";
-$page_icon = "fa-clock";
+$page_icon_img = "icon/stempel-waktu.png";
 include "header.php";
 
 $hasil_file = "";

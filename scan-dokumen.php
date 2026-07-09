@@ -1,6 +1,6 @@
 <?php
 $page_title = "Scan Dokumen (Gambar ke Teks)";
-$page_icon = "fa-file-lines";
+$page_icon_img = "icon/scan-dokumen.png";
 include "header.php";
 ?>
 

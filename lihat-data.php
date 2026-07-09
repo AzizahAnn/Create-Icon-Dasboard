@@ -1,6 +1,6 @@
 <?php
 $page_title = "Lihat Data";
-$page_icon = "fa-table";
+$page_icon_img = "icon/lihat-data.png";
 include "header.php";
 
 // Data simulasi -- nanti ganti dengan query ke database

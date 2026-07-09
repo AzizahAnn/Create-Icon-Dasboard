@@ -1,7 +1,7 @@
 <?php
 $page_title = "Impor Gambar";
-$page_icon = "fa-file-import";
-include "includes/header.php";
+$page_icon_img = "icon/impor-gambar.png";
+include "header.php";
 
 $msg = "";
 if ($_SERVER["REQUEST_METHOD"] === "POST" && isset($_FILES["gambar"])) {

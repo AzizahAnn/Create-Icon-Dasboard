@@ -1,6 +1,6 @@
 <?php
 $page_title = "Ubah Gambar ke PDF";
-$page_icon = "fa-file-pdf";
+$page_icon_img = "icon/gambar-ke-pdf.png";
 include "header.php";
 ?>
 

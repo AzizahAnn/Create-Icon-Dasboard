@@ -1,6 +1,6 @@
 <?php
 $page_title = "Konversi Bahasa";
-$page_icon = "fa-language";
+$page_icon_img = "icon/konversi-bahasa.png";
 include "header.php";
 
 $hasil = "";

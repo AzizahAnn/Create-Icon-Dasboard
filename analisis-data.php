@@ -1,6 +1,6 @@
 <?php
 $page_title = "Analisis Data";
-$page_icon = "fa-chart-pie";
+$page_icon_img = "icon/analisis-data.png";
 include "header.php";
 
 // Data simulasi -- nanti diganti hasil query database

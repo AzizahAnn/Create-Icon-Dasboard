@@ -1,6 +1,6 @@
 <?php
 $page_title = "E-Notulen (Voice to Teks)";
-$page_icon = "fa-microphone";
+$page_icon_img = "icon/e-notulen.png";
 include "header.php";
 ?>
 

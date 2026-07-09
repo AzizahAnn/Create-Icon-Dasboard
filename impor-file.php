@@ -1,10 +1,7 @@
 <?php
-session_start();
-
-if (empty($_SESSION["logged_in"])) {
-    header("Location: login.php");
-    exit;
-}
+$page_title = "Impor File";
+$page_icon_img = "icon/impor-file.png";
+include "header.php";
 
 $username = $_SESSION["username"] ?? "Admin";
 
@@ -140,117 +137,6 @@ body {
     color:#fff;
 }
 
-/* SIDEBAR */
-.sidebar {
-    position:fixed;
-    width:240px;
-    height:100vh;
-    background:#111827;
-    padding:20px;
-    overflow-y:auto;
-    scrollbar-width:thin;
-    scrollbar-color:#334155 #111827;
-}
-.sidebar::-webkit-scrollbar { width:6px; }
-.sidebar::-webkit-scrollbar-track { background:#111827; }
-.sidebar::-webkit-scrollbar-thumb { background:#334155; border-radius:10px; }
-.sidebar h2 { color:#38bdf8; }
-.sidebar a {
-    display:block;
-    padding:12px;
-    color:#cbd5e1;
-    text-decoration:none;
-    margin-top:5px;
-    border-radius:8px;
-}
-.sidebar a:hover { background:#1e293b; }
-.sidebar a.active { background:#1e293b; color:#38bdf8; }
-
-.sidebar .has-submenu {
-    display:flex;
-    justify-content:space-between;
-    align-items:center;
-    cursor:pointer;
-    padding:12px;
-    margin-top:5px;
-    border-radius:8px;
-    color:#cbd5e1;
-}
-.sidebar .has-submenu:hover { background:#1e293b; }
-.sidebar .has-submenu i.chevron { transition:0.3s; font-size:12px; }
-.sidebar .has-submenu.open i.chevron { transform:rotate(180deg); }
-
-.submenu {
-    max-height:0;
-    overflow:hidden;
-    transition:max-height 0.3s ease;
-    margin-left:10px;
-    border-left:2px solid #1e293b;
-}
-.submenu.open { max-height:500px; }
-.submenu a {
-    padding:10px 12px;
-    font-size:13px;
-    color:#94a3b8;
-}
-.submenu a:hover { background:#1e293b; color:#38bdf8; }
-.submenu a.active { background:#1e293b; color:#38bdf8; }
-.submenu a img.submenu-icon {
-    width:16px;
-    height:16px;
-    object-fit:contain;
-    margin-right:6px;
-    vertical-align:middle;
-}
-
-/* MAIN */
-.main { margin-left:260px; padding:20px; }
-
-/* TOPBAR */
-.topbar {
-    display:flex;
-    justify-content:space-between;
-    align-items:center;
-    background:#1e293b;
-    padding:15px;
-    border-radius:10px;
-}
-.search { padding:10px; width:300px; border-radius:8px; border:none; }
-
-/* BUTTON */
-.btn { padding:10px 15px; border:none; border-radius:10px; cursor:pointer; margin-right:10px; }
-.btn-blue { background:#38bdf8; color:#000; }
-.btn-green { background:#22c55e; color:#000; }
-.btn-purple { background:#a855f7; color:#fff; }
-.btn-logout { background:#ef4444; color:#fff; text-decoration:none; display:inline-block; }
-.btn-logout:hover { background:#dc2626; }
-.user-info { color:#cbd5e1; margin-right:15px; font-size:14px; }
-
-/* PAGE HEADER */
-.page-header {
-    margin-top:20px;
-    margin-bottom:10px;
-    display:flex;
-    align-items:center;
-    gap:10px;
-}
-.page-header i { color:#38bdf8; font-size:22px; }
-.page-header h2 { margin:0; font-size:22px; }
-
-/* BOX / PANEL */
-.box {
-    background:#1e293b;
-    padding:20px;
-    border-radius:15px;
-    margin-top:20px;
-}
-.box label {
-    display:block;
-    margin-bottom:10px;
-    color:#94a3b8;
-    font-size:14px;
-}
-
 /* DROPZONE */
 .import-dropzone {
     border: 2px dashed #334155;
@@ -302,56 +188,6 @@ a.link-hapus:hover { text-decoration:underline; }
 </head>
 
 <body>
-
-<!-- SIDEBAR -->
-<div class="sidebar">
-    <h2><i class="fa fa-database"></i> DOKPIN 5.0</h2>
-    <a href="admin.php"><i class="fa fa-home"></i> Dashboard</a>
-
-    <div class="has-submenu open" id="dataArsipToggle">
-        <span><i class="fa fa-folder"></i> Data Arsip</span>
-        <i class="fa fa-chevron-down chevron"></i>
-    </div>
-    <div class="submenu open" id="dataArsipSubmenu">
-        <a href="scan-dokumen.php"><img class="submenu-icon" src="icon/scan-dokumen.png" alt="Scan Dokumen"> Scan Dokumen</a>
-        <a href="scan-gambar.php"><img class="submenu-icon" src="icon/scan-gambar.png" alt="Scan Gambar"> Scan Gambar</a>
-        <a href="e-notulen.php"><img class="submenu-icon" src="icon/e-notulen.png" alt="E-Notulen"> E-Notulen</a>
-        <a href="gambar-ke-pdf.php"><img class="submenu-icon" src="icon/impor-gambar-ke-pdf.png" alt="Gambar ke PDF"> Gambar ke PDF</a>
-        <a href="lihat-data.php"><img class="submenu-icon" src="icon/lihat-data.png" alt="Lihat Data"> Lihat Data</a>
-        <a href="ringkas-catatan.php"><img class="submenu-icon" src="icon/peringkas-catatan.png" alt="Peringkas Catatan"> Peringkas Catatan</a>
-        <a href="konversi-bahasa.php"><img class="submenu-icon" src="icon/konversi-bahasa.png" alt="Konversi Bahasa"> Konversi Bahasa</a>
-        <a href="stempel-waktu.php"><img class="submenu-icon" src="icon/stempel-waktu.png" alt="Stempel Waktu"> Stempel Waktu</a>
-        <a href="impor-gambar.php"><img class="submenu-icon" src="icon/impor-gambar.png" alt="Impor Gambar"> Impor Gambar</a>
-        <a href="impor-file.php" class="active"><img class="submenu-icon" src="icon/impor-dokumen.png" alt="Impor File"> Impor File</a>
-        <a href="jernihkan-gambar.php"><img class="submenu-icon" src="icon/jernihkan-gambar.png" alt="Jernihkan Gambar"> Jernihkan Gambar</a>
-        <a href="analisis-data.php"><img class="submenu-icon" src="icon/analisis-data.png" alt="Analisis Data"> Analisis Data</a>
-    </div>
-
-    <a href="#"><i class="fa fa-upload"></i> Upload Otomatis</a>
-    <a href="#"><i class="fa fa-chart-line"></i> Analitik</a>
-    <a href="#"><i class="fa fa-gear"></i> Setting</a>
-</div>
-
-<!-- MAIN -->
-<div class="main">
-
-    <!-- TOPBAR -->
-    <div class="topbar">
-        <input class="search" placeholder="Cari arsip, dokumen, kategori...">
-        <div>
-            <button class="btn btn-blue"><i class="fa fa-plus"></i> Upload</button>
-            <button class="btn btn-green"><i class="fa fa-magic"></i> Auto Arsip</button>
-            <button class="btn btn-purple"><i class="fa fa-bolt"></i> Scan AI</button>
-            <span class="user-info"><i class="fa fa-user-circle"></i> <?= htmlspecialchars($username) ?></span>
-            <a href="logout.php" class="btn btn-logout"><i class="fa fa-right-from-bracket"></i> Logout</a>
-        </div>
-    </div>
-
-    <!-- PAGE HEADER -->
-    <div class="page-header">
-        <i class="fa fa-folder-open"></i>
-        <h2>Impor File</h2>
-    </div>
 
     <!-- UPLOAD BOX -->
     <div class="box">

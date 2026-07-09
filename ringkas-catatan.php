@@ -1,7 +1,7 @@
 <?php
 $page_title = "Peringkas Catatan";
-$page_icon = "fa-list-check";
-include "includes/header.php";
+$page_icon_img = "icon/ringkas-catatan.png";
+include "header.php";
 
 $ringkasan = "";
 $teks_asli = "";
@@ -70,4 +70,4 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
 
 <p class="note" style="margin-top:-10px;">Catatan: ini ringkasan otomatis sederhana berbasis frekuensi kata, bukan AI generatif. Untuk hasil yang lebih pintar, nanti bisa disambungkan ke Claude API.</p>
 
-<?php include "includes/footer.php"; ?>
+<?php include "footer.php"; ?>

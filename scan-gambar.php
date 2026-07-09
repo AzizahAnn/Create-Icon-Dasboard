@@ -1,6 +1,6 @@
 <?php
 $page_title = "Scan Gambar";
-$page_icon = "fa-camera";
+$page_icon_img = "icon/scan-gambar.png";
 include "header.php";
 
 $msg = "";
