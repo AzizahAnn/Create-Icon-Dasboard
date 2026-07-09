@@ -17,15 +17,23 @@ $max_size = 20 * 1024 * 1024; // 20 MB
 $msg      = "";
 $msg_type = ""; // success | error
 
-// Ambil id kategori "Impor File" — pastikan sudah ditambahkan di tabel kategori
+// ==== PASTIKAN KATEGORI "Impor File" ADA DI DATABASE ====
+// Kalau belum ada, dibuat otomatis di sini supaya file yang diupload
+// selalu punya kategori_id yang valid (bukan NULL).
 $kategoriImporFileId = null;
 try {
     $stmtKategori = $pdo->prepare("SELECT id FROM kategori WHERE nama_kategori = ? LIMIT 1");
     $stmtKategori->execute(["Impor File"]);
     $kategoriImporFileId = $stmtKategori->fetchColumn();
-    $kategoriImporFileId = $kategoriImporFileId ?: null;
+
+    if (!$kategoriImporFileId) {
+        $insertKategori = $pdo->prepare("INSERT INTO kategori (nama_kategori) VALUES (?)");
+        $insertKategori->execute(["Impor File"]);
+        $kategoriImporFileId = $pdo->lastInsertId();
+    }
 } catch (Exception $e) {
-    // Diamkan kalau gagal ambil kategori
+    $msg = "Gagal menyiapkan kategori 'Impor File': " . $e->getMessage();
+    $msg_type = "error";
 }
 
 // ==== HANDLE UPLOAD ====
@@ -34,7 +42,16 @@ if ($_SERVER["REQUEST_METHOD"] === "POST" && isset($_FILES["dokumen"])) {
     $ext  = strtolower(pathinfo($file["name"], PATHINFO_EXTENSION));
 
     if ($file["error"] !== UPLOAD_ERR_OK) {
-        $msg = "Terjadi kesalahan saat upload (kode error: {$file['error']}).";
+        $errorMessages = [
+            UPLOAD_ERR_INI_SIZE   => "File melebihi batas upload_max_filesize di php.ini.",
+            UPLOAD_ERR_FORM_SIZE  => "File melebihi batas MAX_FILE_SIZE pada form.",
+            UPLOAD_ERR_PARTIAL    => "File hanya terupload sebagian.",
+            UPLOAD_ERR_NO_FILE    => "Tidak ada file yang dipilih.",
+            UPLOAD_ERR_NO_TMP_DIR => "Folder temporary tidak ditemukan di server.",
+            UPLOAD_ERR_CANT_WRITE => "Gagal menulis file ke disk.",
+            UPLOAD_ERR_EXTENSION  => "Upload dihentikan oleh ekstensi PHP.",
+        ];
+        $msg = $errorMessages[$file["error"]] ?? "Terjadi kesalahan saat upload (kode error: {$file['error']}).";
         $msg_type = "error";
     } elseif (!in_array($ext, $allowed)) {
         $msg = "Format file tidak didukung. Format yang diizinkan: " . implode(", ", $allowed);
@@ -50,7 +67,10 @@ if ($_SERVER["REQUEST_METHOD"] === "POST" && isset($_FILES["dokumen"])) {
         $safeName     = preg_replace('/[^a-zA-Z0-9_-]/', '_', $originalName);
         $newName      = $safeName . "_" . date("Ymd_His") . "." . $ext;
 
-        if (move_uploaded_file($file["tmp_name"], $upload_dir . $newName)) {
+        if (!is_writable($upload_dir)) {
+            $msg = "Folder uploads/ tidak bisa ditulis. Periksa permission foldernya.";
+            $msg_type = "error";
+        } elseif (move_uploaded_file($file["tmp_name"], $upload_dir . $newName)) {
             $msg = "File berhasil diimpor: " . $newName;
             $msg_type = "success";
 
@@ -67,8 +87,19 @@ if ($_SERVER["REQUEST_METHOD"] === "POST" && isset($_FILES["dokumen"])) {
 
             // Catat ke tabel arsip dengan kategori_id khusus "Impor File"
             try {
-                $stmt = $pdo->prepare("INSERT INTO arsip (nama_dokumen, kategori_id, file_path, uploaded_by) VALUES (?, ?, ?, ?)");
-                $stmt->execute([$newName, $kategoriImporFileId, $upload_dir . $newName, $userId]);
+                $ukuranKb = round(filesize($upload_dir . $newName) / 1024, 1);
+                $stmt = $pdo->prepare("INSERT INTO arsip
+                    (judul, kategori_id, jenis_arsip, file_path, format_file, ukuran_file, uploaded_by, status, sifat)
+                    VALUES (?, ?, ?, ?, ?, ?, ?, 1, 'Biasa')");
+                $stmt->execute([
+                    $originalName,
+                    $kategoriImporFileId,
+                    "Lainnya",
+                    $upload_dir . $newName,
+                    $ext,
+                    $ukuranKb,
+                    $userId,
+                ]);
             } catch (Exception $e) {
                 $msg = "File tersimpan, tapi gagal dicatat ke database: " . $e->getMessage();
                 $msg_type = "error";
@@ -107,9 +138,12 @@ if (isset($_GET["delete"])) {
 }
 
 // ==== LIST FILES (dari database, hanya kategori Impor File) ====
-$stmt = $pdo->prepare("SELECT * FROM arsip WHERE kategori_id = ? ORDER BY created_at DESC");
-$stmt->execute([$kategoriImporFileId]);
-$files = $stmt->fetchAll(PDO::FETCH_ASSOC);
+$files = [];
+if ($kategoriImporFileId) {
+    $stmt = $pdo->prepare("SELECT * FROM arsip WHERE kategori_id = ? ORDER BY created_at DESC");
+    $stmt->execute([$kategoriImporFileId]);
+    $files = $stmt->fetchAll(PDO::FETCH_ASSOC);
+}
 
 $icon_map = [
     "pdf"  => ["fa-file-pdf",   "#f87171"],
@@ -235,7 +269,7 @@ a.link-hapus:hover { text-decoration:underline; }
                         <td>
                             <div class="file-row-icon">
                                 <i class="fa <?= $icon ?>" style="color:<?= $color ?>;"></i>
-                                <?= htmlspecialchars($f["nama_dokumen"]) ?>
+                                <?= htmlspecialchars($f["judul"]) ?>
                             </div>
                         </td>
                         <td><?= $size ?></td>
@@ -248,7 +282,7 @@ a.link-hapus:hover { text-decoration:underline; }
                             <a href="<?= htmlspecialchars($path) ?>" download class="link-download"><i class="fa fa-download"></i> Download</a>
                             <a href="?delete=<?= $f['id'] ?>"
                                class="link-hapus"
-                               onclick="return confirm('Yakin mau hapus <?= htmlspecialchars(addslashes($f['nama_dokumen'])) ?>? File tidak bisa dikembalikan.');">
+                               onclick="return confirm('Yakin mau hapus <?= htmlspecialchars(addslashes($f['judul'])) ?>? File tidak bisa dikembalikan.');">
                                 <i class="fa fa-trash"></i> Hapus
                             </a>
                         </td>
@@ -259,13 +293,17 @@ a.link-hapus:hover { text-decoration:underline; }
         <?php endif; ?>
     </div>
 
-</div>
-
 <script>
-document.getElementById('dataArsipToggle').addEventListener('click', function() {
-    this.classList.toggle('open');
-    document.getElementById('dataArsipSubmenu').classList.toggle('open');
-});
+// Guard: elemen dataArsipToggle mungkin berasal dari header.php (sidebar),
+// jika tidak ditemukan, skip tanpa menghentikan script lain di bawahnya.
+const dataArsipToggleEl  = document.getElementById('dataArsipToggle');
+const dataArsipSubmenuEl = document.getElementById('dataArsipSubmenu');
+if (dataArsipToggleEl && dataArsipSubmenuEl) {
+    dataArsipToggleEl.addEventListener('click', function() {
+        this.classList.toggle('open');
+        dataArsipSubmenuEl.classList.toggle('open');
+    });
+}
 
 const dropzone   = document.getElementById('dropzone');
 const fileInput  = document.getElementById('fileInput');
