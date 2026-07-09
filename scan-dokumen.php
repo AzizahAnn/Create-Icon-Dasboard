@@ -1,7 +1,7 @@
 <?php
 $page_title = "Scan Dokumen (Gambar ke Teks)";
 $page_icon = "fa-file-lines";
-include "includes/header.php";
+include "header.php";
 ?>
 
 <div class="panel">
@@ -168,4 +168,4 @@ document.getElementById('btnScanFile').addEventListener('click', async () => {
 });
 </script>
 
-<?php include "includes/footer.php"; ?>
+<?php include "footer.php"; ?>
