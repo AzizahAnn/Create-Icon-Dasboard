@@ -135,7 +135,7 @@ body {
 <body>
 
 <div class="login-box">
-    <h2><i class="fa fa-database"></i> ARSIP PRO</h2>
+    <h2><i class="fa fa-database"></i> DOKPIN 5.0</h2>
     <p class="subtitle">Silakan login untuk melanjutkan</p>
 
     <?php if ($error): ?>

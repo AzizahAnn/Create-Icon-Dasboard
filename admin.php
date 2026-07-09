@@ -294,7 +294,7 @@ body {
 
 <!-- SIDEBAR -->
 <div class="sidebar">
-    <h2><i class="fa fa-database"></i> ARSIP PRO</h2>
+    <h2><i class="fa fa-database"></i> DOKPIN 5.0</h2>
     <a href="#"><i class="fa fa-home"></i> Dashboard</a>
 
     <div class="has-submenu" id="dataArsipToggle">
