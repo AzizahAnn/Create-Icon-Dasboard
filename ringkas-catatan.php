@@ -1,6 +1,6 @@
 <?php
 $page_title = "Peringkas Catatan";
-$page_icon_img = "icon/ringkas-catatan.png";
+$page_icon_img = "icon/peringkas-catatan.png";
 include "header.php";
 
 $ringkasan = "";
