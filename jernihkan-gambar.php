@@ -16,6 +16,22 @@ $hasil_file    = "";
 $original_file = "";
 $error         = "";
 
+// ==== PASTIKAN KATEGORI "Jernihkan Gambar" ADA DI DATABASE ====
+$kategoriId = null;
+try {
+    $stmtKategori = $pdo->prepare("SELECT id FROM kategori WHERE nama_kategori = ? LIMIT 1");
+    $stmtKategori->execute(["Jernihkan Gambar"]);
+    $kategoriId = $stmtKategori->fetchColumn();
+
+    if (!$kategoriId) {
+        $insertKategori = $pdo->prepare("INSERT INTO kategori (nama_kategori) VALUES (?)");
+        $insertKategori->execute(["Jernihkan Gambar"]);
+        $kategoriId = $pdo->lastInsertId();
+    }
+} catch (Exception $e) {
+    $error = "Gagal menyiapkan kategori 'Jernihkan Gambar': " . $e->getMessage();
+}
+
 if ($_SERVER["REQUEST_METHOD"] === "POST" && isset($_FILES["gambar"])) {
     if (!extension_loaded('gd')) {
         $error = "Ekstensi GD belum aktif di PHP kamu. Aktifkan dulu di php.ini (extension=gd), lalu restart Apache.";
@@ -60,26 +76,33 @@ if ($_SERVER["REQUEST_METHOD"] === "POST" && isset($_FILES["gambar"])) {
 
             $hasil_file = $target;
 
-            // Catat ke tabel arsip (struktur: nama_dokumen, kategori_id, file_path, uploaded_by, created_at)
+            // Catat ke tabel arsip (kolom sesuai struktur aslinya: judul, kategori_id,
+            // jenis_arsip, file_path, format_file, ukuran_file, uploaded_by, status, sifat)
             try {
-                // Ambil id kategori "Jernihkan Gambar" — sesuaikan nama dengan isi tabel kategori kamu
-                $stmtKategori = $pdo->prepare("SELECT id FROM kategori WHERE nama_kategori = ? LIMIT 1");
-                $stmtKategori->execute(["Jernihkan Gambar"]);
-                $kategoriId = $stmtKategori->fetchColumn();
-                $kategoriId = $kategoriId ?: null;
-
                 // Ambil id user yang sedang login
                 $stmtUser = $pdo->prepare("SELECT id FROM users WHERE username = ? LIMIT 1");
                 $stmtUser->execute([$username]);
                 $userId = $stmtUser->fetchColumn();
                 $userId = $userId ?: null;
 
-                $stmt = $pdo->prepare("INSERT INTO arsip (nama_dokumen, kategori_id, file_path, uploaded_by) VALUES (?, ?, ?, ?)");
-                $stmt->execute([$newName, $kategoriId, $target, $userId]);
+                $ukuranKb = round(filesize($target) / 1024, 1);
+
+                $stmt = $pdo->prepare("INSERT INTO arsip
+                    (judul, kategori_id, jenis_arsip, file_path, format_file, ukuran_file, uploaded_by, status, sifat)
+                    VALUES (?, ?, ?, ?, ?, ?, ?, 1, 'Biasa')");
+                $stmt->execute([
+                    $newName,
+                    $kategoriId,
+                    "Gambar",
+                    $target,
+                    "png",
+                    $ukuranKb,
+                    $userId,
+                ]);
             } catch (Exception $e) {
                 // Diamkan kalau gagal, atau aktifkan baris ini untuk debug:
-                // $error = "Gagal simpan ke arsip: " . $e->getMessage();
-            }   
+                $error = "Gambar tersimpan, tapi gagal dicatat ke arsip: " . $e->getMessage();
+            }
         }
     }
 }
@@ -88,8 +111,8 @@ if ($_SERVER["REQUEST_METHOD"] === "POST" && isset($_FILES["gambar"])) {
 if (isset($_GET['hapus']) && ctype_digit($_GET['hapus'])) {
     $hapusId = (int) $_GET['hapus'];
     try {
-        $stmtCek = $pdo->prepare("SELECT file_path FROM arsip WHERE id = ? AND kategori_id = 6");
-        $stmtCek->execute([$hapusId]);
+        $stmtCek = $pdo->prepare("SELECT file_path FROM arsip WHERE id = ? AND kategori_id = ?");
+        $stmtCek->execute([$hapusId, $kategoriId]);
         $rowHapus = $stmtCek->fetch();
 
         if ($rowHapus) {
@@ -107,14 +130,16 @@ if (isset($_GET['hapus']) && ctype_digit($_GET['hapus'])) {
     exit;
 }
 
-// Ambil riwayat gambar yang sudah dijernihkan (kategori_id = 6)
+// Ambil riwayat gambar yang sudah dijernihkan
 $riwayat = [];
-try {
-    $stmtRiwayat = $pdo->prepare("SELECT id, nama_dokumen, file_path, created_at FROM arsip WHERE kategori_id = 6 ORDER BY created_at DESC");
-    $stmtRiwayat->execute();
-    $riwayat = $stmtRiwayat->fetchAll();
-} catch (Exception $e) {
-    // Diamkan kalau gagal ambil riwayat
+if ($kategoriId) {
+    try {
+        $stmtRiwayat = $pdo->prepare("SELECT id, judul, file_path, created_at FROM arsip WHERE kategori_id = ? ORDER BY created_at DESC");
+        $stmtRiwayat->execute([$kategoriId]);
+        $riwayat = $stmtRiwayat->fetchAll();
+    } catch (Exception $e) {
+        // Diamkan kalau gagal ambil riwayat
+    }
 }
 ?>
 
@@ -409,11 +434,11 @@ body {
                 <tr>
                     <td>
                         <img src="<?= htmlspecialchars($r['file_path']) ?>"
-                             alt="<?= htmlspecialchars($r['nama_dokumen']) ?>"
+                             alt="<?= htmlspecialchars($r['judul']) ?>"
                              class="riwayat-thumb"
-                             onclick="bukaPreview('<?= htmlspecialchars($r['file_path']) ?>', '<?= htmlspecialchars($r['nama_dokumen']) ?>')">
+                             onclick="bukaPreview('<?= htmlspecialchars($r['file_path']) ?>', '<?= htmlspecialchars($r['judul']) ?>')">
                     </td>
-                    <td><?= htmlspecialchars($r['nama_dokumen']) ?></td>
+                    <td><?= htmlspecialchars($r['judul']) ?></td>
                     <td style="color:#94a3b8;"><?= htmlspecialchars($r['created_at']) ?></td>
                     <td>
                         <a href="<?= htmlspecialchars($r['file_path']) ?>" download class="link-download" style="margin:0;">
@@ -422,7 +447,7 @@ body {
                         &nbsp;|&nbsp;
                         <a href="jernihkan-gambar.php?hapus=<?= (int) $r['id'] ?>"
                            class="link-hapus"
-                           onclick="return confirm('Yakin mau hapus <?= htmlspecialchars(addslashes($r['nama_dokumen'])) ?>? File tidak bisa dikembalikan.');">
+                           onclick="return confirm('Yakin mau hapus <?= htmlspecialchars(addslashes($r['judul'])) ?>? File tidak bisa dikembalikan.');">
                             <i class="fa fa-trash"></i> Hapus
                         </a>
                     </td>
@@ -470,10 +495,16 @@ document.addEventListener('keydown', (e) => {
     }
 });
 
-document.getElementById('dataArsipToggle').addEventListener('click', function() {
-    this.classList.toggle('open');
-    document.getElementById('dataArsipSubmenu').classList.toggle('open');
-});
+// Guard: elemen dataArsipToggle mungkin berasal dari header.php (sidebar),
+// jika tidak ditemukan, skip tanpa menghentikan script lain di bawahnya.
+const dataArsipToggleEl  = document.getElementById('dataArsipToggle');
+const dataArsipSubmenuEl = document.getElementById('dataArsipSubmenu');
+if (dataArsipToggleEl && dataArsipSubmenuEl) {
+    dataArsipToggleEl.addEventListener('click', function() {
+        this.classList.toggle('open');
+        dataArsipSubmenuEl.classList.toggle('open');
+    });
+}
 
 const dropzone     = document.getElementById('dropzone');
 const fileInput    = document.getElementById('fileInput');
