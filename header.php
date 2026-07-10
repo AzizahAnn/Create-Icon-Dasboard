@@ -20,6 +20,143 @@ $page_icon_img = $page_icon_img ?? null;     // opsional: path ke file gambar ic
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title><?= htmlspecialchars($page_title) ?> - Arsip Digital</title>
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+<style>
+body {
+    margin:0;
+    font-family: 'Segoe UI', sans-serif;
+    background:#0f172a;
+    color:#fff;
+}
+
+/* MAIN */
+.main {
+    margin-left:260px;
+    padding:20px;
+}
+
+/* TOPBAR */
+.topbar {
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    background:#1e293b;
+    padding:15px;
+    border-radius:10px;
+}
+
+.user-info {
+    color:#cbd5e1;
+    margin-right:15px;
+    font-size:14px;
+}
+
+.btn-logout {
+    background:#ef4444;
+    color:#fff;
+    text-decoration:none;
+    display:inline-block;
+    padding:10px 15px;
+    border-radius:10px;
+}
+.btn-logout:hover { background:#dc2626; }
+
+/* PANEL (kontainer form/konten) */
+.panel {
+    background:#1e293b;
+    padding:20px;
+    border-radius:15px;
+    margin-bottom:20px;
+}
+
+.panel label {
+    display:block;
+    margin-top:12px;
+    margin-bottom:6px;
+    color:#94a3b8;
+    font-size:14px;
+    font-weight:600;
+}
+
+.panel label:first-child {
+    margin-top:0;
+}
+
+/* FORM ELEMENTS */
+textarea,
+select,
+input[type="text"],
+input[type="file"] {
+    width:100%;
+    max-width:600px;
+    box-sizing:border-box;
+    padding:10px;
+    border-radius:8px;
+    border:1px solid #334155;
+    background:#0f172a;
+    color:#fff;
+    font-family:inherit;
+    font-size:14px;
+}
+
+textarea:focus,
+select:focus,
+input[type="text"]:focus {
+    outline:none;
+    border-color:#38bdf8;
+}
+
+textarea {
+    resize:vertical;
+}
+
+/* BUTTON AKSI */
+.btn-action {
+    margin-top:15px;
+    padding:10px 18px;
+    border:none;
+    border-radius:10px;
+    background:#38bdf8;
+    color:#000;
+    font-weight:600;
+    cursor:pointer;
+    font-size:14px;
+}
+.btn-action:hover {
+    background:#0ea5e9;
+}
+
+/* HASIL TERJEMAHAN / RESULT BOX */
+.result-box {
+    background:#0f172a;
+    border:1px solid #334155;
+    border-radius:8px;
+    padding:12px;
+    color:#e2e8f0;
+    white-space:pre-wrap;
+    word-break:break-word;
+}
+
+/* TABLE RIWAYAT */
+table {
+    width:100%;
+    border-collapse:collapse;
+    margin-top:10px;
+}
+table th, table td {
+    padding:10px;
+    text-align:left;
+    border-bottom:1px solid #334155;
+    font-size:14px;
+}
+table th {
+    color:#38bdf8;
+}
+
+.note {
+    color:#94a3b8;
+    font-size:13px;
+}
+</style>
 </head>
 <body>
 
