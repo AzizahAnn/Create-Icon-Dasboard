@@ -9,6 +9,7 @@ if (empty($_SESSION["logged_in"])) {
 
 $username = $_SESSION["username"] ?? "Admin";
 
+include "header.php";
 require "config.php";
 
 // Ambil data statistik asli dari database
@@ -34,95 +35,6 @@ body {
     font-family: 'Segoe UI', sans-serif;
     background:#0f172a;
     color:#fff;
-}
-
-/* SIDEBAR */
-.sidebar {
-    position:fixed;
-    width:240px;
-    height:100vh;
-    background:#111827;
-    padding:20px;
-    overflow-y:auto;
-    scrollbar-width:thin;
-    scrollbar-color:#334155 #111827;
-}
-.sidebar::-webkit-scrollbar {
-    width:6px;
-}
-.sidebar::-webkit-scrollbar-track {
-    background:#111827;
-}
-.sidebar::-webkit-scrollbar-thumb {
-    background:#334155;
-    border-radius:10px;
-}
-.sidebar h2 {
-    color:#38bdf8;
-}
-.sidebar a {
-    display:block;
-    padding:12px;
-    color:#cbd5e1;
-    text-decoration:none;
-    margin-top:5px;
-    border-radius:8px;
-}
-.sidebar a:hover {
-    background:#1e293b;
-}
-
-.sidebar .has-submenu {
-    display:flex;
-    justify-content:space-between;
-    align-items:center;
-    cursor:pointer;
-    padding:12px;
-    margin-top:5px;
-    border-radius:8px;
-    color:#cbd5e1;
-}
-
-.sidebar .has-submenu:hover {
-    background:#1e293b;
-}
-
-.sidebar .has-submenu i.chevron {
-    transition:0.3s;
-    font-size:12px;
-}
-
-.sidebar .has-submenu.open i.chevron {
-    transform:rotate(180deg);
-}
-
-.submenu {
-    max-height:0;
-    overflow:hidden;
-    transition:max-height 0.3s ease;
-    margin-left:10px;
-    border-left:2px solid #1e293b;
-}
-
-.submenu.open {
-    max-height:500px;
-}
-
-.submenu a {
-    padding:10px 12px;
-    font-size:13px;
-    color:#94a3b8;
-}
-
-.submenu a:hover {
-    background:#1e293b;
-    color:#38bdf8;
-}
-
-.submenu a i {
-    width:18px;
-    color:#38bdf8;
-    margin-right:6px;
 }
 
 /* MAIN */
@@ -291,35 +203,6 @@ body {
 </head>
 
 <body>
-
-<!-- SIDEBAR -->
-<div class="sidebar">
-    <h2><i class="fa fa-database"></i> DOKPIN 5.0</h2>
-    <a href="#"><i class="fa fa-home"></i> Dashboard</a>
-
-    <div class="has-submenu" id="dataArsipToggle">
-        <span><i class="fa fa-folder"></i> Data Arsip</span>
-        <i class="fa fa-chevron-down chevron"></i>
-    </div>
-    <div class="submenu" id="dataArsipSubmenu">
-        <a href="scan-dokumen.php"><img class="submenu-icon" src="icon/scan-dokumen.png" alt="Scan Dokumen"> Scan Dokumen</a>
-        <a href="scan-gambar.php"><img class="submenu-icon" src="icon/scan-gambar.png" alt="Scan Gambar"> Scan Gambar</a>
-        <a href="e-notulen.php"><img class="submenu-icon" src="icon/e-notulen.png" alt="E-Notulen"> E-Notulen</a>
-        <a href="gambar-ke-pdf.php"><img class="submenu-icon" src="icon/impor-gambar-ke-pdf.png" alt="Gambar ke PDF"> Gambar ke PDF</a>
-        <a href="lihat-data.php"><img class="submenu-icon" src="icon/lihat-data.png" alt="Lihat Data"> Lihat Data</a>
-        <a href="ringkas-catatan.php"><img class="submenu-icon" src="icon/peringkas-catatan.png" alt="Peringkas Catatan"> Peringkas Catatan</a>
-        <a href="konversi-bahasa.php"><img class="submenu-icon" src="icon/konversi-bahasa.png" alt="Konversi Bahasa"> Konversi Bahasa</a>
-        <a href="stempel-waktu.php"><img class="submenu-icon" src="icon/stempel-waktu.png" alt="Stempel Waktu"> Stempel Waktu</a>
-        <a href="impor-gambar.php"><img class="submenu-icon" src="icon/impor-gambar.png" alt="Impor Gambar"> Impor Gambar</a>
-        <a href="impor-file.php"><img class="submenu-icon" src="icon/impor-dokumen.png" alt="Impor File"> Impor File</a>
-        <a href="jernihkan-gambar.php"><img class="submenu-icon" src="icon/jernihkan-gambar.png" alt="Jernihkan Gambar"> Jernihkan Gambar</a>
-        <a href="analisis-data.php"><img class="submenu-icon" src="icon/analisis-data.png" alt="Analisis Data"> Analisis Data</a>
-    </div>
-
-    <a href="#"><i class="fa fa-upload"></i> Upload Otomatis</a>
-    <a href="#"><i class="fa fa-chart-line"></i> Analitik</a>
-    <a href="#"><i class="fa fa-gear"></i> Setting</a>
-</div>
 
 <!-- MAIN -->
 <div class="main">
