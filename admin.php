@@ -285,13 +285,6 @@ body {
 </div>
 
 <script>
-document.getElementById('dataArsipToggle').addEventListener('click', function() {
-    this.classList.toggle('open');
-    document.getElementById('dataArsipSubmenu').classList.toggle('open');
-});
-</script>
-
-<script>
 // CHART CANVAS MODERN
 const ctx = document.getElementById('chartArsip');
 
