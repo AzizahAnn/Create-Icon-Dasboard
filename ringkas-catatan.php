@@ -1,14 +1,4 @@
 <?php
-session_start();
-
-// Cek apakah sudah login. Kalau belum, lempar ke halaman login.
-if (empty($_SESSION["logged_in"])) {
-    header("Location: login.php");
-    exit;
-}
-
-$username = $_SESSION["username"] ?? "Admin";
-
 /* ==========================================================
    ALGORITMA PERINGKAS CATATAN (EXTRACTIVE SUMMARIZATION)
    Murni PHP, tanpa API/library eksternal.
@@ -505,54 +495,13 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $error = "Silakan tempel teks atau upload dokumen terlebih dahulu.";
     }
 }
+$page_title = "Peringkas Catatan";
+$page_icon_img = "icon/peringkas-catatan.png";
+require "config.php";
+include "header.php";
 ?>
-<!DOCTYPE html>
-<html lang="id">
-<head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Peringkas Catatan - Arsip Pro</title>
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
-<style>
-body {
-    margin:0;
-    font-family: 'Segoe UI', sans-serif;
-    background:#0f172a;
-    color:#fff;
-}
-.main {
-    max-width:900px;
-    margin:0 auto;
-    padding:30px 20px 60px;
-}
-.topbar-page {
-    display:flex;
-    align-items:center;
-    justify-content:space-between;
-    margin-bottom:25px;
-}
-.topbar-page h2 {
-    color:#38bdf8;
-    margin:0;
-    display:flex;
-    align-items:center;
-    gap:10px;
-}
-.page-icon {
-    width:40px;
-    height:40px;
-    object-fit:contain;
-}
-.back-link {
-    color:#94a3b8;
-    text-decoration:none;
-    font-size:14px;
-    display:flex;
-    align-items:center;
-    gap:6px;
-}
-.back-link:hover { color:#38bdf8; }
 
+<style>
 .box {
     background:#1e293b;
     padding:25px;
@@ -729,15 +678,6 @@ textarea:focus { outline:2px solid #38bdf8; }
 }
 .copy-btn:hover { background:#38bdf8; color:#0f172a; }
 </style>
-</head>
-<body>
-
-<div class="main">
-
-    <div class="topbar-page">
-        <h2><img src="icon/peringkas-catatan.png" alt="Peringkas Catatan" class="page-icon"> Peringkas Catatan</h2>
-        <a href="admin.php" class="back-link"><i class="fa fa-arrow-left"></i> Kembali ke Dashboard</a>
-    </div>
 
     <div class="box">
         <div class="mode-tabs">
@@ -800,8 +740,6 @@ textarea:focus { outline:2px solid #38bdf8; }
     </div>
     <?php endif; ?>
 
-</div>
-
 <script>
 function salinRingkasan() {
     const el = document.getElementById('hasilRingkasan');
@@ -858,5 +796,4 @@ document.addEventListener('DOMContentLoaded', function () {
 });
 </script>
 
-</body>
-</html>
+<?php include "footer.php"; ?>

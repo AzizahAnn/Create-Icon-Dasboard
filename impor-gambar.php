@@ -1,6 +1,6 @@
 <?php
 $page_title = "Impor Gambar";
-$page_icon = "fa-file-import";
+$page_icon_img = "icon/impor-gambar.png";
 require "config.php";
 include "header.php";
 
