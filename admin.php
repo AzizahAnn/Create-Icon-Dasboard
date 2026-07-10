@@ -9,7 +9,7 @@ if (empty($_SESSION["logged_in"])) {
 
 $username = $_SESSION["username"] ?? "Admin";
 
-include "header.php";
+include "sidebar.php";
 require "config.php";
 
 // Ambil data statistik asli dari database
