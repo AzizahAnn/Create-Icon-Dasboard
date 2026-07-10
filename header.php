@@ -8,7 +8,7 @@ if (empty($_SESSION["logged_in"])) {
 
 $username = $_SESSION["username"] ?? "Admin";
 
-// $page_title dan $page_icon diisi dari file yang include ini
+// $page_title, $page_icon, $page_icon_img diisi dari file yang include ini
 $page_title = $page_title ?? "Halaman";
 $page_icon = $page_icon ?? "fa-file";       // fallback: font awesome (kalau tidak ada gambar)
 $page_icon_img = $page_icon_img ?? null;     // opsional: path ke file gambar icon
@@ -42,11 +42,55 @@ body {
     background:#1e293b;
     padding:15px;
     border-radius:10px;
+    gap:15px;
+    flex-wrap:wrap;
+}
+
+.topbar-left {
+    display:flex;
+    align-items:center;
+    gap:14px;
+}
+
+.back-link {
+    color:#94a3b8;
+    text-decoration:none;
+    font-size:14px;
+    display:flex;
+    align-items:center;
+    gap:6px;
+    padding:8px 12px;
+    border-radius:8px;
+    transition:0.2s;
+}
+.back-link:hover {
+    background:#0f172a;
+    color:#38bdf8;
+}
+
+.page-icon-title {
+    display:flex;
+    align-items:center;
+    gap:10px;
+}
+.page-icon-title img {
+    width:28px;
+    height:28px;
+    object-fit:contain;
+}
+.page-icon-title h2 {
+    margin:0;
+    font-size:19px;
+}
+
+.topbar-right {
+    display:flex;
+    align-items:center;
+    gap:12px;
 }
 
 .user-info {
     color:#cbd5e1;
-    margin-right:15px;
     font-size:14px;
 }
 
@@ -54,7 +98,9 @@ body {
     background:#ef4444;
     color:#fff;
     text-decoration:none;
-    display:inline-block;
+    display:inline-flex;
+    align-items:center;
+    gap:6px;
     padding:10px 15px;
     border-radius:10px;
 }
@@ -166,17 +212,24 @@ table th {
 
     <!-- TOPBAR HALAMAN -->
     <div class="topbar">
-        <div style="display:flex; align-items:center; gap:12px;">
-            <?php if ($page_icon_img): ?>
-                <img src="<?= htmlspecialchars($page_icon_img) ?>" alt="" style="width:32px; height:32px; object-fit:contain;">
-            <?php else: ?>
-                <i class="fa <?= htmlspecialchars($page_icon) ?>" style="font-size:22px; color:#38bdf8;"></i>
-            <?php endif; ?>
-            <h2 style="margin:0;"><?= htmlspecialchars($page_title) ?></h2>
+        <div class="topbar-left">
+            <a href="admin.php" class="back-link">
+                <i class="fa fa-arrow-left"></i>
+            </a>
+
+            <div class="page-icon-title">
+                <?php if ($page_icon_img): ?>
+                    <img src="<?= htmlspecialchars($page_icon_img) ?>" alt="">
+                <?php else: ?>
+                    <i class="fa <?= htmlspecialchars($page_icon) ?>" style="font-size:22px; color:#38bdf8;"></i>
+                <?php endif; ?>
+                <h2><?= htmlspecialchars($page_title) ?></h2>
+            </div>
         </div>
-        <div>
+
+        <div class="topbar-right">
             <span class="user-info"><i class="fa fa-user-circle"></i> <?= htmlspecialchars($username) ?></span>
-            <a href="logout.php" class="btn btn-logout"><i class="fa fa-right-from-bracket"></i> Logout</a>
+            <a href="logout.php" class="btn-logout"><i class="fa fa-right-from-bracket"></i> Logout</a>
         </div>
     </div>
 
