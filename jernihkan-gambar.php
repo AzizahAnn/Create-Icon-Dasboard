@@ -57,15 +57,14 @@ if ($_SERVER["REQUEST_METHOD"] === "POST" && isset($_FILES["gambar"])) {
             $img = ($ext === "png") ? imagecreatefrompng($original_file) : imagecreatefromjpeg($original_file);
 
             // Proses "penjernihan": naikkan kontras, ketajaman, dan kurangi noise ringan
-            imagefilter($img, IMG_FILTER_SMOOTH, -4);      // kurangi noise sedikit
-            imagefilter($img, IMG_FILTER_CONTRAST, -15);   // naikkan kontras
+            imagefilter($img, IMG_FILTER_CONTRAST, -10);   // naikkan kontras
             imagefilter($img, IMG_FILTER_BRIGHTNESS, 5);   // sedikit lebih terang
 
             // sharpen manual pakai convolution matrix
             $sharpenMatrix = [
-                [0, -1, 0],
-                [-1, 5, -1],
-                [0, -1, 0]
+                [-1, -1, -1],
+                [-1, 9, -1],
+                [-1, -1, -1]
             ];
             imageconvolution($img, $sharpenMatrix, 1, 0);
 
